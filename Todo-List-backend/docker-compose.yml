@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  report_payment-service:
+  todo_list:
     build: 
       context: .
       dockerfile: ./Dockerfile

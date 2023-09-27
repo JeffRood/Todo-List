@@ -1,7 +1,9 @@
 
-from jose import JWTError, jwt
+
 from datetime import datetime, timedelta
 import configparser
+
+from jose import JWTError
 from models.user import User
 from utils.mongo_utils import MongoAtlas
 
@@ -17,7 +19,7 @@ class UserService():
         to_encode = data.copy()
         expire = datetime.utcnow() + expires_delta
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, self.config['configuration']['SECRET_KEY'], algorithm= self.config['configuration']['ALGORITHM'])
+        encoded_jwt = JWTError.encode(to_encode, self.config['configuration']['SECRET_KEY'], algorithm= self.config['configuration']['ALGORITHM'])
         return encoded_jwt
 
 
