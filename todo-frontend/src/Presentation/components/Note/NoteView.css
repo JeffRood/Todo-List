@@ -1,0 +1,40 @@
+.note-card {
+    width: calc(20% - 10px);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: 20px;
+    overflow: hidden;
+  }
+  
+  .note-header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .note-corner {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #3498db;
+  }
+  
+  .note-time {
+    font-size: 12px;
+  }
+  
+  .note-content {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .note-content p {
+    margin: 0;
+  }
+  

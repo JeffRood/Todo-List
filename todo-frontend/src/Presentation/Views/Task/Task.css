@@ -1,0 +1,6 @@
+/* Estilo para el contenedor de las notas */
+.notes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }

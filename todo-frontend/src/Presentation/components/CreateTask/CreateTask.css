@@ -1,0 +1,73 @@
+/* createTask.css */
+.createTask_container {
+    position: relative;
+    max-width: 42rem;
+    min-width: 35rem;
+    padding: 2rem;
+    background: #FFFFFF;
+    border-radius: 15px;
+    z-index: 10;
+    margin: 0 auto; 
+  }
+  
+  .createTask_title {
+    text-align: center;
+    margin-bottom: 1.5rem; 
+  }
+  
+  .form_createTask {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  
+  .dv_form_createTask_title,
+  .dv_form_createTask_textarea,
+  .dv_form_createTask_checkbox,
+  .dv_form_createTask_datepicker {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dv_form_createTask_checkbox {
+    display: flex;
+    align-items: self-end;
+    gap: 0.5rem; 
+  }
+  
+  .form_createTask_checkbox {
+    width: auto; 
+    line-height: 1.3rem;
+  }
+  
+  .form_createTask_input,
+  .form_createTask_textarea,
+  .form_createTask_checkbox,
+  .form_createTask_datepicker {
+    width: 100%; 
+    line-height: 1.3rem;
+  }
+  
+  
+  .btn_cancel_create {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem; 
+  }
+  
+  .btn_cancel_create button {
+    background-color: #242424;
+    color: aliceblue;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 15px;
+    flex-grow: 1; 
+  }
+  
+  .btn_cancel_create button:hover {
+    background-color: rgba(0, 0, 255, 0.74);
+  }
+  

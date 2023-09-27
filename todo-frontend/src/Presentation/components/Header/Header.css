@@ -1,0 +1,96 @@
+  /* Header.css */
+  .header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem; 
+    background-color: #F5F5F5; 
+    color: white; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .header_title {
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: black;
+    margin: 0;
+  }
+  
+.bx-log-in{
+    color: aliceblue;
+    font-size: 2rem;
+}
+.btn_login{
+    background-color: transparent;
+    border: none;
+}
+.bx-log-in:hover{
+    color: blue;
+    cursor: pointer;
+}
+.avatar-circle {
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background-color: #007bff; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.initials {
+  font-size: 16px; 
+  color: white; 
+  font-weight: bold; 
+}
+
+
+.create_container {
+  position: fixed;
+  right: 2rem;
+  bottom: 3rem;
+  background-color: #007bff; 
+  border-radius: 50%; 
+  width: 60px; 
+  height: 60px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+  transition: background-color 0.3s ease; 
+}
+
+.create_container:hover {
+  background-color: #0056b3; 
+}
+
+.create_container::before {
+  content: "+"; 
+  font-size: 24px; 
+  color: white; 
+  font-weight: bold;
+}
+
+  
+
+
+
+  
+  @keyframes waves {
+    0% {
+      transform: scale(1);
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.2);
+    }
+  }
+
+
+
+
+

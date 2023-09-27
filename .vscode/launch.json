@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      
+      {
+        "name": "Debug Clients",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/Todo-List-backend/main.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/Todo-List-backend",
+        "justMyCode": true
+      }
+    ],
+    "compounds": []
+  }
