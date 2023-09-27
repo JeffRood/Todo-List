@@ -37,7 +37,7 @@ class TaskService():
         try:
             task_collection = self.mongo_util.get_collections().Task
             skip = (page - 1) * limit
-            condition = {"status": "Activa", "userId": "userId"}
+            condition = {"status": "Activa"}
             projection = {"_id": 0, "name": 1, "description": 1, "expirationDate": 1, "status": 1, "statusProcess": 1}
             tasks = list(task_collection.find(condition, projection).skip(skip).limit(limit))
             
