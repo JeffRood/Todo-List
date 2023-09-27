@@ -19,7 +19,7 @@ async def get_list(page: int = 1, limit: int = 10):
     result = await TaskService().get_list(page, limit)
     return (result)
 
-@router.update("/update")
+@router.put("/update")
 async def get_list(task: TaskModel):
     result = await TaskService().update_task(task)
     return (result)
