@@ -1,9 +1,8 @@
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from typing import List
-from models.user import Token
+from models.user import LoginRequest
 from services.user import UserService
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 
 
@@ -12,9 +11,6 @@ router = APIRouter(
     tags=["user"]
 )
 
-class LoginRequest(BaseModel):
-    email: str
-    password: str
 
 
 @router.post("/token")
