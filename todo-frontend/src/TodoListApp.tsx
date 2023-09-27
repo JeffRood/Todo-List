@@ -10,10 +10,25 @@ import AuthRoutes from './Domain/routes/auth';
 
 function TodoListApp() {
 	const { state, actions } = useAuth()
-	useEffect(() => {
 
-	}, [actions]);
+ useEffect(() => {
+    const handleClick = (event) => {
+      if (event.target.tagName === 'BUTTON') {
+        event.preventDefault(); // Evitar recarga de página en clics de botón
+      }
+    };
 
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+
+  // Resto de tu aplicación
+
+
+	
 	return (
 		<>		
 		<AuthProvider> 	

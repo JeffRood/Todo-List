@@ -12,12 +12,17 @@ router = APIRouter(
     tags=["user"]
 )
 
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
 
 @router.post("/token")
-async def login_for_access_token(email, password ):
+async def login_for_access_token(login_data: LoginRequest):
     try:
         user_service_instance = UserService()
-
+        email = login_data.email
+        password = login_data.password
         user = await user_service_instance.authenticate_user(email, password)
 
         if not user:

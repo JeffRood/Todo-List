@@ -15,16 +15,16 @@ const instance = axios.create({
 //     },
 //     (error: AxiosError) => Promise.reject(error as AxiosError),
 // );
-// instance.interceptors.response.use(
-//     async (response: AxiosResponse) => response,
+instance.interceptors.response.use(
+    async (response: AxiosResponse) => response,
 
-//     async (error: AxiosError) => {
-//         if (error.code == '401') {
-//             UserPersistService.removePersistedUser();
-//             return;
-//         }
-//         return Promise.reject(error as AxiosError)
-//     } 
-// );
-
+    async (error: AxiosError) => {
+        if (error.code == '401') {
+            // UserPersistService.removePersistedUser();
+            return;
+        }
+        return Promise.reject(error as AxiosError)
+    } 
+);
+debugger;
 export default instance;
