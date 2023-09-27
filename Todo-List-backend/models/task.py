@@ -15,7 +15,7 @@ class StatusEnum(str, Enum):
 
 
 class TaskModel(BaseModel):
-    id: Optional[int]
+    _id: Optional[str]
     name: str 
     description: str
     expirationDate: datetime.datetime

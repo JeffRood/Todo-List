@@ -11,54 +11,63 @@ class TaskService():
   
     async def create_task(self, task: CreateTask):
         try:
-            task_model = TaskModel(
-                id=None,
-                name= task.name,
-                description= task.description,
-                expirationDate= task.expirationDate,
-                userId= task.userId,
-                status= StatusEnum.activa, 
-                statusProcess=StatusProcessEnum.pendiente
-            )
+            users_collection = self.mongo_util.get_collections().Users
+            user_document = users_collection.find_one({"_id": ObjectId(task.userId)})
+            if user_document:
+                task_model = TaskModel(
+                    name= task.name,
+                    description= task.description,
+                    expirationDate= task.expirationDate,
+                    userId= str(user_document['_id']),
+                    status= StatusEnum.activa, 
+                    statusProcess=StatusProcessEnum.pendiente
+                )
 
-            task_collection = self.mongo_util.get_collections().Task
-            result = task_collection.insert_one(task_model.dict())
-            task_id = str(result.inserted_id)
-            task_model.id = task_id
-            return task_model
+                task_collection = self.mongo_util.get_collections().Task
+                result = task_collection.insert_one(task_model.dict())
+                task_id = str(result.inserted_id)
+                task_model._id = task_id
+                return {"data": task_model, "Success": True, "message": ""}
+            else:
+                return {"data": None, "Success": False, "message": "Este usuario no esta registrado"}
               
         except Exception as e:
-            print(f"Error al obtener la lista de tareas: {str(e)}")
-            return []
+            return {"data": None, "Success": False, "message": f"Error al crear tareas: {str(e)}"}
     
-
 
     async def get_list(self, page: int, limit: int):
         try:
             task_collection = self.mongo_util.get_collections().Task
             skip = (page - 1) * limit
             condition = {"status": "Activa"}
-            projection = {"_id": 0, "name": 1, "description": 1, "expirationDate": 1, "status": 1, "statusProcess": 1}
+            projection = {"name": 1, "description": 1, "expirationDate": 1, "status": 1, "statusProcess": 1, "userId": 1 }
             tasks = list(task_collection.find(condition, projection).skip(skip).limit(limit))
             
             if tasks:
-                return tasks
+                total_count = task_collection.count_documents(condition)
+                for task in tasks:
+                    task["_id"] = str(task["_id"])
+                    if "userId" in task:
+                        task["userId"] = str(task["userId"])
+
+                return {"data": tasks, "totalrow": total_count, "Success": True, "message": ""}
+            
             else:
-                return {"message": "No se encontraron tareas"}
+                return {"data": {}, "totalrow": 0, "Success": False, "message": "No se encontraron tareas"}
         
         except Exception as e:
-            print(f"Error al obtener la lista de tareas: {str(e)}")
-            return []
-        
+            return {"data": None, "Success": False, "message": f"Error al obtener la lista de tareas: {str(e)}"}
+
+
     
-    async def update_task(self, updated_task: TaskModel):
+    async def update_task(self, taskId,  updated_task: TaskModel):
         try:
             task_collection = self.mongo_util.get_collections().Task
 
 
-            existing_task = task_collection.find_one({"_id": ObjectId(updated_task.id)})
+            existing_task = task_collection.find_one({"_id": ObjectId(taskId)})
             if not existing_task:
-                return {"message": "Tarea no encontrada"}
+                return {"data": None, "Success": False, "message": "Tarea no encontrada"}
 
             update_data = {
                 "name": updated_task.name,
@@ -68,26 +77,23 @@ class TaskService():
                 "statusProcess": updated_task.statusProcess
             }
 
-            task_collection.update_one({"_id": ObjectId(updated_task.id)}, {"$set": update_data})
-
-            return {"message": "Tarea actualizada exitosamente"}
+            task_collection.update_one({"_id": ObjectId(taskId)}, {"$set": update_data})
+            return {"data": update_data, "Success": True, "message": "Tarea actualizada exitosamente"}
 
         except Exception as e:
-            print(f"Error al actualizar la tarea: {str(e)}")
-            return {"message": "Error al actualizar la tarea"}
-
+            return {"data": None, "Success": False, "message": f"Error al actualizar la tarea: {str(e)}"}
+            
 
     async def delete_task(self, task_id: str):
         try:
             task_collection = self.mongo_util.get_collections().Task
             existing_task = task_collection.find_one({"_id": ObjectId(task_id)})
             if not existing_task:
-                return {"message": "Tarea no encontrada"}
+                return {"data": None, "Success": False, "message": "Tarea no encontrada"}
 
             task_collection.update_one({"_id": ObjectId(task_id)}, {"$set": {"status": StatusEnum.Inactiva}})
+            return {"data": None, "Success": True, "message": "Tarea Eliminada Correctamente"}
 
-            return {"message": "Tarea marcada como inactiva"}
+        except Exception as e:            
+            return {"data": None, "Success": False, "message": f"Error al eliminar la tarea: {str(e)}"}
 
-        except Exception as e:
-            print(f"Error al eliminar la tarea: {str(e)}")
-            return {"message": "Error al eliminar la tarea"}
