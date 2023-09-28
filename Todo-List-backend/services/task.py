@@ -24,10 +24,8 @@ class TaskService():
                 )
 
                 task_collection = self.mongo_util.get_collections().Task
-                result = task_collection.insert_one(task_model.dict())
-                task_id = str(result.inserted_id)
-                task_model._id = task_id
-                return {"data": task_model, "Success": True, "message": ""}
+                task_collection.insert_one(task_model.dict())
+                return {"data": None, "Success": True, "message": ""}
             else:
                 return {"data": None, "Success": False, "message": "Este usuario no esta registrado"}
               
