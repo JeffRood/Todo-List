@@ -58,7 +58,7 @@
     gap: 1rem; 
   }
   
-  .btn_cancel_create button {
+  /* .btn_cancel_create button {
     background-color: #242424;
     color: aliceblue;
     padding: 0.5rem 1rem;
@@ -69,5 +69,31 @@
   
   .btn_cancel_create button:hover {
     background-color: rgba(0, 0, 255, 0.74);
+  } */
+  
+  .add-button {
+    background-color: #007bff;
+    color: aliceblue;
   }
   
+  .add-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .delete-button {
+    background-color: #ff0000; 
+    color: aliceblue;
+  }
+  
+  .delete-button:hover {
+    background-color: #cc0000; 
+  }
+  
+  .update-button {
+    background-color: #242424; 
+    color: aliceblue;
+  }
+  
+  .update-button:hover {
+    background-color: #242424; 
+  }

@@ -9,7 +9,7 @@ import TodoListApp from './TodoListApp';
 function App() {
 
  useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = (event:any) => {
       if (event.target.tagName === 'BUTTON') {
         event.preventDefault(); 
       }

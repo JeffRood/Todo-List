@@ -23,7 +23,6 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    debugger;
     await signIn(email, password);
     toast.error("hola");
   };

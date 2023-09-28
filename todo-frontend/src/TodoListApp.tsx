@@ -25,9 +25,7 @@ function TodoListApp() {
 
 
   useEffect(() => {
-	console.log('Valor actualizado desde el app principal:', state.userToken);
 
-	 
   }, [state.userToken])
   
 

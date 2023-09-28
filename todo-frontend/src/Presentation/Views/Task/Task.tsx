@@ -12,6 +12,7 @@ import { useAppContext } from '../../../Domain/context/appContext';
 const Task: React.FC = () => {
 
   const {
+    state,
     actions: {signOut},
   } = useAuth();
 
@@ -19,26 +20,33 @@ const Task: React.FC = () => {
     state: {DataCollection, TotalRow},
     actions: {updateDataCollection},
   } = useAppContext();
-  const [tasks, setTasks] = useState([]);
-  const [isVisibleModal, setIsVisibleModal] = useState(false);
-  const [onCreate, setOnCreate] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useState(null);
 
-  // Estado para el término de búsqueda
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const [onMode, setMode] = useState<"create" | "edit" | undefined>('create');
+
+  const [selectedTask, setSelectedTask] = useState(null);
+
+
+  
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
+  const [limit, setLimit] = useState<number>(16);
 
   const handleCloseModal = () => {
     setIsVisibleModal(false);
-    setOnCreate(false);
-    setIsLogin(false);
+    setMode('create');
   }
 
   const handleOnCreate = () => {
-    setOnCreate(true);
+    setMode('create');
     setIsVisibleModal(true);
+  }
+
+  const logOut = () => {
+    signOut();
   }
 
 
@@ -47,18 +55,43 @@ const Task: React.FC = () => {
  }, [])
 
 
- 
+ const handleNoteClick = (task) => {
+  setMode('edit');
+  setSelectedTask(task); 
+  setIsVisibleModal(true); 
+};
 
-  // Filtrar las tareas basadas en el término de búsqueda
-  const filteredTasks = tasks.filter((task) =>
-    task.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+const completedTasks = [
+  'Tarea 1 completada',
+  'Tarea 2 completada',
+  'Tarea 3 completada',
+];
+
+const toggleMenu = () => {
+  setIsMenuOpen(!isMenuOpen);
+};
+
+
 
   return (
     <section>
-      <Header onCreate={handleOnCreate}/>
+      <Header onCreate={handleOnCreate} name={state.user?.name} onLogOut={logOut}/>
+      
+      <button onClick={toggleMenu} className="green-button">Task Completed</button>
 
-      {/* Agregar un campo de entrada para la búsqueda */}
+
+      <div className={`menu ${isMenuOpen ? 'open' : ''}`}>
+        <button onClick={toggleMenu} className="close-button">
+          Cerrar
+        </button>
+        <h2>Task Completed</h2>
+        <ul>
+          {completedTasks.map((task, index) => (
+            <li key={index}>{task}</li>
+          ))}
+        </ul>
+      </div>
       <input
         type="text"
         placeholder="Buscar tarea..."
@@ -67,14 +100,19 @@ const Task: React.FC = () => {
       />
 
       <div className="notes-container">
-        {/* Mostrar solo las tareas que coincidan con el término de búsqueda */}
         {DataCollection.map((task) => (
-          <Note  title={task.name} description={task.description} time={task.expirationDate} />
-         ))} 
+
+        <Note
+          title={task.name}
+          description={task.description}
+          time={task.expirationDate}
+          onClick={() =>handleNoteClick(task)}
+        />
+))}
       </div>
 
       <ModalView isVisible={isVisibleModal}>
-        {onCreate && <CreateTask onCloseModal={handleCloseModal} />}
+        {<CreateTask mode={onMode}  onCloseModal={handleCloseModal} taskToEdit={selectedTask} />}
       </ModalView>
     </section>
   );

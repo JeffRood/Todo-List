@@ -26,5 +26,4 @@ instance.interceptors.response.use(
         return Promise.reject(error as AxiosError)
     } 
 );
-debugger;
 export default instance;

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import React, { createContext, Dispatch, FC, useContext, useEffect, useMemo, useReducer } from 'react';
-import { AuthActions, AuthState } from '../type';
-import { TokenService } from '../services/User/UserPersistence';
+import { AuthActions, AuthState, User } from '../type';
+import { TokenService } from '../services/User/UserToken';
 import { UserService } from '../services/User/UserServices';
 
 
@@ -9,7 +9,7 @@ import { UserService } from '../services/User/UserServices';
 
 // Crear el contexto
 const AuthContext = createContext<[AuthState, Dispatch<AuthActions>]>([
-	{ isLoading: true, isSignOut: true, userToken: null },
+	{ isLoading: true, isSignOut: true, userToken: null, user: null },
 	() => {}
 ])
 
@@ -17,18 +17,19 @@ const AuthContext = createContext<[AuthState, Dispatch<AuthActions>]>([
 const reducer = (state: AuthState, action: AuthActions): AuthState => {
 	switch (action.type) {
 		case 'SIGN_IN':
-            debugger;
 			return {
 				...state,
 				isLoading: false,
 				isSignOut: false,
-				userToken: action.payload.token
+				userToken: action.payload.token,
+                user: action.payload.user
 			}
 		case 'SIGN_OUT':
 			return {
 				...state,
 				isSignOut: true,
-				userToken: null
+				userToken: null,
+                user: null
 			}
 
 		default:
@@ -39,11 +40,11 @@ const reducer = (state: AuthState, action: AuthActions): AuthState => {
 
 export const AuthProvider: FC = ({ children }: any) => {
     const initialUserToken =  TokenService.getPersistedToken();
-
 	const value = useReducer(reducer, {
 		isLoading: true,
 		isSignOut: false,
-		userToken: initialUserToken
+		userToken: initialUserToken?.token,
+        user: initialUserToken?.tokenValue as User | null
 	})
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -66,8 +67,8 @@ export const useAuth = (): {
 				try {       
 					const request = await UserService.PostLoginUser(user, pass);
                     if (request.data.Success) {
-                        await TokenService.setPersistedToken(`${request.data.data.token_type} ${request.data.data.access_token}`)
-                        dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.data?.access_token } })
+                        const userId = await TokenService.setPersistedToken(`${request.data.data.token_type} ${request.data.data.access_token}`)
+                        dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.data?.access_token, user: userId } })
                     }
 
 				} catch (error) {
