@@ -87,8 +87,8 @@ const toggleMenu = () => {
         </button>
         <h2>Task Completed</h2>
         <ul>
-          {completedTasks.map((task, index) => (
-            <li key={index}>{task}</li>
+          {DataCollection.filter(x => x.statusProcess == 'Completada').map((task) => (
+            <li>{task.name}</li>
           ))}
         </ul>
       </div>
@@ -100,7 +100,7 @@ const toggleMenu = () => {
       />
 
       <div className="notes-container">
-        {DataCollection.map((task) => (
+        {DataCollection.filter(x => x.statusProcess == 'Pendiente').map((task) => (
 
         <Note
           title={task.name}

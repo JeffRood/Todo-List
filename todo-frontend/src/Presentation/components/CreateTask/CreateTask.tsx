@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CreateTask.css';
 import { useAppContext } from '../../../Domain/context/appContext';
 import { useAuth } from '../../../Domain/context/authContext';
+import { format } from 'date-fns';
 
 interface CreateTaskProps {
   onCloseModal: () => void;
@@ -27,6 +28,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
     title: '',
     description: '',
     expirationDate: '',
+    completed: false
   });
   const [showExpirationDate, setShowExpirationDate] = useState(false);
 
@@ -35,7 +37,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({
       setFormData({
         title: taskToEdit.name,
         description: taskToEdit.description,
-        expirationDate: taskToEdit.expirationDate,
+        expirationDate: format(new Date(taskToEdit.expirationDate), 'yyyy-MM-dd'),
+        completed: taskToEdit.expirationDate = 'Pendiente' ? false : true
       });
     }
   }, [mode, taskToEdit]);
@@ -76,7 +79,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({
         description: formData.description,
         expirationDate: formData.expirationDate,
         status: status,
-        statusProcess: statusProcess,
+        statusProcess: formData.completed ? 'Completada'  : 'Pendiente',
         userId: userId
     }
     const req = await updateTask(updateTaskobj);
@@ -119,17 +122,31 @@ const CreateTask: React.FC<CreateTaskProps> = ({
             ></textarea>
           </div>
 
-          <div className="dv_form_createTask_checkbox">
-            <label>
-              <input
-                type="checkbox"
-                name="enableExpirationDate"
-                onChange={() => setShowExpirationDate(!showExpirationDate)}
-              />
-              add expiration date
-            </label>
-          </div>
-
+          <div className="dv_form_createTask_checkboxes">
+  <div className="checkbox-container">
+    <label>
+      <input
+        type="checkbox"
+        name="enableExpirationDate"
+        onChange={() => setShowExpirationDate(!showExpirationDate)}
+      />
+      Add expiration date
+    </label>
+  </div>
+  {mode === 'edit' && (
+  <div className="checkbox-container">
+    <label>
+      <input
+        type="checkbox"
+        name="completed"
+        onChange={() => setFormData((prevData) => ({ ...prevData, completed: !formData.completed }))}
+        checked={formData.completed}
+      />
+      Mark as completed
+    </label>
+  </div>
+    )}
+</div>
           {showExpirationDate && (
             <div className="dv_form_createTask_datepicker">
               <label htmlFor="expirationDateId">Expiration date:</label>
