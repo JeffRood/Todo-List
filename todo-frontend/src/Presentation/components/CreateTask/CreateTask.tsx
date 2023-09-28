@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import './CreateTask.css'
+import { useAppContext } from '../../../Domain/context/appContext';
 
 
 const CreateTask: React.FC = ({onCloseModal, onSubmit}) => {
-
+    const {
+        state: {},
+        actions: {createTask, updateDataCollection},
+      } = useAppContext();
     const [onCreate, setOnCreate] = useState(false);
     const [formData, setFormData] = useState({ title: '', description: '', expirationDate: '' });
     const [showExpirationDate, setShowExpirationDate] = useState(false);
@@ -19,9 +23,11 @@ const CreateTask: React.FC = ({onCloseModal, onSubmit}) => {
     };
   
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      // Aquí puedes llamar a la función onSubmit con los datos del formulario.
-      onSubmit(formData);
+        const req = await createTask(formData.title, formData.description, formData.expirationDate, '')
+        if (req) {
+            updateDataCollection(1, 12 , '')
+            onCloseModal()
+        }
     };
 
 

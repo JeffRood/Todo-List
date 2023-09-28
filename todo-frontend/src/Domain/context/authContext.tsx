@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import React, { createContext, Dispatch, FC, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, Dispatch, FC, useContext, useEffect, useMemo, useReducer } from 'react';
 import { AuthActions, AuthState } from '../type';
 import { TokenService } from '../services/User/UserPersistence';
 import { UserService } from '../services/User/UserServices';
@@ -9,7 +9,7 @@ import { UserService } from '../services/User/UserServices';
 
 // Crear el contexto
 const AuthContext = createContext<[AuthState, Dispatch<AuthActions>]>([
-	{ isLoading: true, isSignOut: false, userToken: null },
+	{ isLoading: true, isSignOut: true, userToken: null },
 	() => {}
 ])
 
@@ -17,6 +17,7 @@ const AuthContext = createContext<[AuthState, Dispatch<AuthActions>]>([
 const reducer = (state: AuthState, action: AuthActions): AuthState => {
 	switch (action.type) {
 		case 'SIGN_IN':
+            debugger;
 			return {
 				...state,
 				isLoading: false,
@@ -37,10 +38,12 @@ const reducer = (state: AuthState, action: AuthActions): AuthState => {
 
 
 export const AuthProvider: FC = ({ children }: any) => {
+    const initialUserToken =  TokenService.getPersistedToken();
+
 	const value = useReducer(reducer, {
 		isLoading: true,
 		isSignOut: false,
-		userToken: null
+		userToken: initialUserToken
 	})
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -60,19 +63,15 @@ export const useAuth = (): {
 	const actions = useMemo(
 		() => ({
 			signIn: async (user: string, pass: string) => {
-				try {
-                    
+				try {       
 					const request = await UserService.PostLoginUser(user, pass);
                     if (request.data.Success) {
-                        debugger;
-                        TokenService.setPersistedToken(request.data.access_token)
-                        dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.access_token } })
+                        await TokenService.setPersistedToken(`${request.data.data.token_type} ${request.data.data.access_token}`)
+                        dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.data?.access_token } })
                     }
-
 
 				} catch (error) {
                    const errorParse = error as AxiosError
-                   
 				}
 			},
 			signOut: async () => {
@@ -82,5 +81,8 @@ export const useAuth = (): {
 		}),
 		[dispatch]
 	)
+    useEffect(() => {
+        console.log('Valor actualizado de state.userToken:', state.userToken);
+      }, [state.userToken]);
 	return { state, actions }
 }

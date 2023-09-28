@@ -10,9 +10,11 @@ import React, {
     AppActions,
     AppContextState,
   } from '../type';
+import { TaskService } from '../services/Task/TaskServices';
   
   const initialState: AppContextState = {
-    DataCollection: []
+    DataCollection: [],
+    TotalRow: 0
   };
   
   const AppContext = createContext<[AppContextState, Dispatch<AppActions>]>([
@@ -28,8 +30,7 @@ import React, {
       case 'LOAD_DATA':
         return {
           ...state,
-          DataCollection: action.payload,
-          // CartShipping: []
+          DataCollection: action.payload.list
         };
   
       default:
@@ -45,20 +46,26 @@ import React, {
   export const useAppContext = (): {
     state: AppContextState;
     actions: {
-      updateDataCollection: (DataList: any[]) => void;
+      updateDataCollection: (page: number, limit: number ,search: string) => void;
+      createTask: (name: string, description: string ,expirationDate: any , userId: string) => boolean
     };
-    selectors: {
-
-    };
+    selectors: {};
   } => {
     const [state, dispatch] = useContext(AppContext);
   
     const actions = useMemo(
       () => ({
-        updateDataCollection: (DataList: Vendor[]) => {
+        updateDataCollection: async (page: number = 1, limit: number = 10 ,search: string = '') => {
           // console.log('emtre');
-          dispatch({type: 'LOAD_DATA', payload: DataList});
+          debugger;
+          const request = await TaskService.fetchTask(page, limit, search);
+          dispatch({type: 'LOAD_DATA', payload: {list: request.data.data, total: request.data.totalrow }});
+        },
+        createTask: async (name: string, description: string ,expirationDate: any , userId: string) => {
+          const request = await TaskService.createTask(name, description, expirationDate);
+          return request.data.Success
         }
+
       }),
       [dispatch],
     );

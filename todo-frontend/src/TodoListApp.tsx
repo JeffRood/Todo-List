@@ -25,7 +25,9 @@ function TodoListApp() {
 
 
   useEffect(() => {
+	console.log('Valor actualizado desde el app principal:', state.userToken);
 
+	 
   }, [state.userToken])
   
 
@@ -33,8 +35,7 @@ function TodoListApp() {
 	
 	return (
 		<>		
-		<AuthProvider> 	
-			<AppProvider>
+
 				<Router>
 				{state.userToken == null ? (
 				<AuthRoutes />
@@ -42,8 +43,7 @@ function TodoListApp() {
 				<AppRoutes />
 				)}
 				</Router>
-			</AppProvider>
-		</AuthProvider>
+
 		</>
 	)
 }

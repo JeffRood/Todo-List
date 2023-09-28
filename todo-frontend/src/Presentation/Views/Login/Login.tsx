@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 const Login: React.FC = () => {
     // const navigate = useNavigate();
     const {
-        state: {userToken},
+        state,
         actions: {signIn},
       } = useAuth();
   const [email, setEmail] = useState('');
@@ -26,14 +26,10 @@ const Login: React.FC = () => {
     debugger;
     await signIn(email, password);
     toast.error("hola");
-
-    // event.preventDefault();
   };
 
-  useEffect(() => {
-   
-  }, [userToken])
-  
+
+ 
 
   return (
     <div className="login-container" style={{ backgroundImage: `url("https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?cs=srgb&dl=pexels-min-an-1629212.jpg&fm=jpg")` }}>

@@ -7,16 +7,17 @@ export type AuthActions =
 export interface AuthState {
 	isLoading: boolean
 	isSignOut: boolean
-	userToken: string | null
+	userToken: any | null
 }
 
 
 
 export type AppActions =
-	| { type: 'LOAD_DATA'; payload: any[] }
+	| { type: 'LOAD_DATA'; payload: {list: any[], total: number} }
 
 export interface AppContextState {
 	DataCollection: any[];
+	TotalRow: number
 }
         
 

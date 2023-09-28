@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Header.css';
 
-const Header: React.FC = ({ onCreate, onLogin }: any) => {
+const Header: React.FC = ({ onCreate }: any) => {
   
   const [authenticated, setAuthenticated] = useState(true);
 
