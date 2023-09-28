@@ -1,4 +1,6 @@
 
+@import '../node_modules/react-toastify/dist/ReactToastify.css';
+
 html {
   overflow-x: hidden;
 }

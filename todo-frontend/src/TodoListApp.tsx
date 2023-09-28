@@ -14,18 +14,20 @@ function TodoListApp() {
  useEffect(() => {
     const handleClick = (event) => {
       if (event.target.tagName === 'BUTTON') {
-        event.preventDefault(); // Evitar recarga de página en clics de botón
+        event.preventDefault(); 
       }
     };
-
     document.addEventListener('click', handleClick);
-
     return () => {
-      document.removeEventListener('click', handleClick);
+    document.removeEventListener('click', handleClick);
     };
   }, []);
 
-  // Resto de tu aplicación
+
+  useEffect(() => {
+
+  }, [state.userToken])
+  
 
 
 	

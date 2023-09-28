@@ -1,9 +1,9 @@
 import GlobalVariable from '../../Settings/GlobalVariable';
 
-export namespace UserPersistService {
+export namespace TokenService {
     const tokenKey: string = GlobalVariable.storageKeys.USER_TOKEN;
 
-    export const getPersistedUser = () => {
+    export const getPersistedToken = () => {
         try {
           const rawUser = localStorage.getItem(tokenKey);
           if (rawUser) {
@@ -16,17 +16,19 @@ export namespace UserPersistService {
         }
       };
 
-      export const setPersistedUser = (user: any) => {
+      export const setPersistedToken = (user: any) => {
         try {
-          // Convierte el objeto de usuario a JSON antes de almacenarlo
+            debugger;
           localStorage.setItem(tokenKey, JSON.stringify(user));
+          debugger;
+
         } catch (error) {
           console.error('Error al almacenar el usuario persistido:', error);
         }
       };
       
 
-      export const removePersistedUser = () => {
+      export const removePersistedToken = () => {
         try {
           localStorage.removeItem(tokenKey);
         } catch (error) {

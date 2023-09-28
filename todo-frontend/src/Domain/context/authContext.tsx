@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import React, { createContext, Dispatch, FC, useContext, useMemo, useReducer } from 'react';
 import { AuthActions, AuthState } from '../type';
-import { UserPersistService } from '../services/User/UserPersistence';
+import { TokenService } from '../services/User/UserPersistence';
 import { UserService } from '../services/User/UserServices';
 
 
@@ -61,10 +61,14 @@ export const useAuth = (): {
 		() => ({
 			signIn: async (user: string, pass: string) => {
 				try {
-                    debugger;
+                    
 					const request = await UserService.PostLoginUser(user, pass);
-                    UserPersistService.setPersistedUser(request.data)
-					dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.token } })
+                    if (request.data.Success) {
+                        debugger;
+                        TokenService.setPersistedToken(request.data.access_token)
+                        dispatch({ type: 'SIGN_IN', payload: { token: request?.data?.access_token } })
+                    }
+
 
 				} catch (error) {
                    const errorParse = error as AxiosError
@@ -72,7 +76,7 @@ export const useAuth = (): {
 				}
 			},
 			signOut: async () => {
-				await UserPersistService.removePersistedUser()
+				await TokenService.removePersistedToken()
 				dispatch({ type: 'SIGN_OUT' })
 			}
 		}),

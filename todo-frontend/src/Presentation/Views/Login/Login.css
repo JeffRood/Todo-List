@@ -1,4 +1,6 @@
 /* Añade estos estilos en tu archivo CSS */
+@import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
+
 .login-container {
     background-size: cover;
     background-repeat: no-repeat;
@@ -20,7 +22,7 @@
     max-width: 400px;
     margin: 0 auto;
   }
-  
+
   .form {
     padding-top:  20px;
   }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../Domain/context/authContext';
+import { toast } from 'react-toastify';
 
 
 const Login: React.FC = () => {
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
   const handleSubmit = async () => {
     debugger;
     await signIn(email, password);
+    toast.error("hola");
 
     // event.preventDefault();
   };

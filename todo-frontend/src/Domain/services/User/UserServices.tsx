@@ -11,9 +11,7 @@ export namespace UserService {
       email: user,
       password: password,
     };
-    debugger;
-    const resp =  await instance.post<any>(url, bodyRequest)
-debugger;
-    return resp;
+
+    return  instance.post<any>(url, bodyRequest)
   };
 }
